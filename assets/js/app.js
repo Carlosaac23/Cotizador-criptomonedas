@@ -89,9 +89,8 @@ function mostrarCotizacionHTML(cotizacion) {
   limpiarHTML(resultado);
 
   const baseURL = 'https://www.cryptocompare.com';
-  const { moneda } = objBusqueda;
+  const { criptomoneda } = objBusqueda;
   const { PRICE, HIGHDAY, LOWDAY, CHANGEPCT24HOUR, LASTUPDATE, IMAGEURL } = cotizacion;
-  console.log(IMAGEURL);
 
   const precio = document.createElement('p');
   precio.classList.add('precio');
@@ -110,8 +109,7 @@ function mostrarCotizacionHTML(cotizacion) {
   ultimaActualizacion.innerHTML = `Última actualización: <span>${LASTUPDATE}</span>`;
 
   const imagen = document.createElement('img');
-  imagen.classList.add('cryto-icon');
-  imagen.alt = `Icono de ${moneda}`;
+  imagen.alt = `Icono de ${criptomoneda}`;
   imagen.src = baseURL + IMAGEURL;
 
   resultado.appendChild(precio);
