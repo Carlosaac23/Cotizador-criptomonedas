@@ -55,11 +55,19 @@ function submitFormulario(e) {
   console.log(moneda, criptomoneda);
 
   if (moneda === '' || criptomoneda === 0) {
-    mostrarAlerta('Ambos campos son obligatorios');
+    mostrarAlerta('¡Ambos campos son obligatorios!');
     return;
   }
 }
 
 function mostrarAlerta(mensaje) {
-  console.log(mensaje);
+  const existeAlerta = document.querySelector('.error');
+
+  if (!existeAlerta) {
+    const divMensaje = document.createElement('div');
+    divMensaje.classList.add('error');
+    divMensaje.textContent = mensaje;
+    formulario.appendChild(divMensaje);
+    setTimeout(() => divMensaje.remove(), 2500);
+  }
 }
