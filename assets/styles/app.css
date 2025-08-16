@@ -71,6 +71,12 @@ input[type='submit'] {
   font-weight: bold;
 }
 
+.resultado img {
+  width: 100px;
+  display: block;
+  margin: 0 auto;
+}
+
 p.precio {
   font-size: 30px !important;
 }
