@@ -1,6 +1,7 @@
 const criptomonedasSelect = document.getElementById('criptomonedas');
 const monedasSelect = document.getElementById('moneda');
 const formulario = document.getElementById('formulario');
+const resultado = document.getElementById('resultado');
 
 const objBusqueda = {
   moneda: '',
@@ -21,12 +22,13 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function consultarCriptomonedas() {
-  const url = 'https://min-api.cryptocompare.com/data/top/mktcapfull?limit=15&tsym=USD';
+  const API_URL = 'https://min-api.cryptocompare.com/data/top/mktcapfull?limit=10&tsym=USD';
 
-  fetch(url)
+  fetch(API_URL)
     .then(res => res.json())
     .then(data => obtenerCriptomonedas(data.Data))
-    .then(criptomonedas => selectCriptomonedas(criptomonedas));
+    .then(criptomonedas => selectCriptomonedas(criptomonedas))
+    .catch(error => console.error(error));
 }
 
 function selectCriptomonedas(criptomonedas) {
@@ -58,6 +60,8 @@ function submitFormulario(e) {
     mostrarAlerta('¡Ambos campos son obligatorios!');
     return;
   }
+
+  consultarAPI();
 }
 
 function mostrarAlerta(mensaje) {
@@ -69,5 +73,57 @@ function mostrarAlerta(mensaje) {
     divMensaje.textContent = mensaje;
     formulario.appendChild(divMensaje);
     setTimeout(() => divMensaje.remove(), 2500);
+  }
+}
+
+function consultarAPI() {
+  const { moneda, criptomoneda } = objBusqueda;
+  const API_URL = `https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${criptomoneda}&tsyms=${moneda}`;
+  fetch(API_URL)
+    .then(res => res.json())
+    .then(cotizacion => mostrarCotizacionHTML(cotizacion.DISPLAY[criptomoneda][moneda]))
+    .catch(error => console.error(error));
+}
+
+function mostrarCotizacionHTML(cotizacion) {
+  limpiarHTML(resultado);
+
+  const baseURL = 'https://www.cryptocompare.com';
+  const { moneda } = objBusqueda;
+  const { PRICE, HIGHDAY, LOWDAY, CHANGEPCT24HOUR, LASTUPDATE, IMAGEURL } = cotizacion;
+  console.log(IMAGEURL);
+
+  const precio = document.createElement('p');
+  precio.classList.add('precio');
+  precio.innerHTML = `El precio es: <span>${PRICE}</span>`;
+
+  const precioAlto = document.createElement('p');
+  precioAlto.innerHTML = `Precio más alto del día: <span>${HIGHDAY}</span>`;
+
+  const precioBajo = document.createElement('p');
+  precioBajo.innerHTML = `Precio más bajo del día: <span>${LOWDAY}</span>`;
+
+  const ultimasHoras = document.createElement('p');
+  ultimasHoras.innerHTML = `Variación útlimas 24 horas: <span>${CHANGEPCT24HOUR}%</span>`;
+
+  const ultimaActualizacion = document.createElement('p');
+  ultimaActualizacion.innerHTML = `Última actualización: <span>${LASTUPDATE}</span>`;
+
+  const imagen = document.createElement('img');
+  imagen.classList.add('cryto-icon');
+  imagen.alt = `Icono de ${moneda}`;
+  imagen.src = baseURL + IMAGEURL;
+
+  resultado.appendChild(precio);
+  resultado.appendChild(precioAlto);
+  resultado.appendChild(precioBajo);
+  resultado.appendChild(ultimasHoras);
+  resultado.appendChild(ultimaActualizacion);
+  resultado.appendChild(imagen);
+}
+
+function limpiarHTML(elemento) {
+  while (elemento.firstChild) {
+    elemento.removeChild(elemento.firstChild);
   }
 }
