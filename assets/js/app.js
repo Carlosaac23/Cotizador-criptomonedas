@@ -78,7 +78,11 @@ function mostrarAlerta(mensaje) {
 
 function consultarAPI() {
   const { moneda, criptomoneda } = objBusqueda;
+
   const API_URL = `https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${criptomoneda}&tsyms=${moneda}`;
+
+  mostrarSpinner();
+
   fetch(API_URL)
     .then(res => res.json())
     .then(cotizacion => mostrarCotizacionHTML(cotizacion.DISPLAY[criptomoneda][moneda]))
@@ -91,6 +95,8 @@ function mostrarCotizacionHTML(cotizacion) {
   const baseURL = 'https://www.cryptocompare.com';
   const { criptomoneda } = objBusqueda;
   const { PRICE, HIGHDAY, LOWDAY, CHANGEPCT24HOUR, LASTUPDATE, IMAGEURL } = cotizacion;
+
+  console.log(IMAGEURL);
 
   const precio = document.createElement('p');
   precio.classList.add('precio');
@@ -124,4 +130,19 @@ function limpiarHTML(elemento) {
   while (elemento.firstChild) {
     elemento.removeChild(elemento.firstChild);
   }
+}
+
+function mostrarSpinner() {
+  limpiarHTML(resultado);
+
+  const spinner = document.createElement('div');
+  spinner.classList.add('spinner');
+
+  spinner.innerHTML = `
+    <div class="bounce1"></div>
+    <div class="bounce2"></div>
+    <div class="bounce3"></div>
+  `;
+
+  resultado.appendChild(spinner);
 }
