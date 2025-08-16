@@ -33,7 +33,6 @@ function consultarCriptomonedas() {
 
 function selectCriptomonedas(criptomonedas) {
   criptomonedas.forEach(cripto => {
-    console.log(cripto);
     const { FullName, Name } = cripto.CoinInfo;
 
     const option = document.createElement('option');
@@ -51,10 +50,7 @@ function leerValor(e) {
 function submitFormulario(e) {
   e.preventDefault();
 
-  // Validar
   const { moneda, criptomoneda } = objBusqueda;
-
-  console.log(moneda, criptomoneda);
 
   if (moneda === '' || criptomoneda === 0) {
     mostrarAlerta('¡Ambos campos son obligatorios!');
@@ -95,8 +91,6 @@ function mostrarCotizacionHTML(cotizacion) {
   const baseURL = 'https://www.cryptocompare.com';
   const { criptomoneda } = objBusqueda;
   const { PRICE, HIGHDAY, LOWDAY, CHANGEPCT24HOUR, LASTUPDATE, IMAGEURL } = cotizacion;
-
-  console.log(IMAGEURL);
 
   const precio = document.createElement('p');
   precio.classList.add('precio');
