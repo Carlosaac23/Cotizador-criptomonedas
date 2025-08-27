@@ -35,9 +35,7 @@ async function consultarCriptomonedas() {
 }
 
 function selectCriptomonedas(criptomonedas) {
-  criptomonedas.forEach(cripto => {
-    const { FullName, Name } = cripto.CoinInfo;
-
+  criptomonedas.forEach(({ CoinInfo: { FullName, Name } }) => {
     const option = document.createElement('option');
     option.value = Name;
     option.textContent = FullName;
