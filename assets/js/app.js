@@ -91,12 +91,11 @@ async function consultarAPI() {
   }
 }
 
-function mostrarCotizacionHTML(cotizacion) {
+function mostrarCotizacionHTML({ PRICE, HIGHDAY, LOWDAY, CHANGEPCT24HOUR, LASTUPDATE, IMAGEURL }) {
   limpiarHTML(resultado);
 
   const baseURL = 'https://www.cryptocompare.com';
   const { criptomoneda } = objBusqueda;
-  const { PRICE, HIGHDAY, LOWDAY, CHANGEPCT24HOUR, LASTUPDATE, IMAGEURL } = cotizacion;
 
   const precio = document.createElement('p');
   precio.classList.add('precio');
